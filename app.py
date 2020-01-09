@@ -25,13 +25,14 @@ class Movie(db.Model):  # 表名将会是 movie
     id = db.Column(db.Integer, primary_key=True)  # 主键
     title = db.Column(db.String(60))  # 电影标题
     year = db.Column(db.String(4))  # 电影年份
+'''
 @app.route('/')
 
 def index():
     user = User.query.first()
     movies = Movie.query.all()
     return render_template('index.html', user = user, movies = movies)
-
+'''
 
 '''
 自定义命令initdb
@@ -78,3 +79,28 @@ def forge():
 
     db.session.commit()
     click.echo('Done.')
+
+
+
+
+
+@app.context_processor
+def inject_user():  # 函数名可以随意修改
+    user = User.query.first()
+    return dict(user=user)  # 需要返回字典，等同于return {'user': user}
+
+
+@app.context_processor
+def inject_user():
+    user = User.query.first()
+    return dict(user=user)
+
+
+@app.errorhandler(404)  # 传入要处理的错误代码
+def page_not_found(e):  # 接受异常对象作为参数
+    return render_template('404.html'), 404  # 返回模板和状态码
+
+@app.route('/')
+def index():
+    movies = Movie.query.all()
+    return render_template('index.html', movies=movies)
