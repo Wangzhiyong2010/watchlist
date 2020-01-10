@@ -2,29 +2,25 @@
 
 {% block content %}
 <p>{{ movies|length }} Titles</p>
+
 <form method="post">
     Name <input type="text" name="title" autocomplete="off" required>
     Year <input type="text" name="year" autocomplete="off" required>
     <input class="btn" type="submit" name="submit" value="Add">
 </form>
 
-
 <ul class="movie-list">
     {% for movie in movies %}
     <li>{{ movie.title }} - {{ movie.year }}
-
-{# https://www.html.cn/doc/html/tags/tag-span/   HTML <span> 标签标签定义及使用说明<span> 用于对文档中的行内元素进行组合。<span> 标签没有固定的格式表现。当对它应用样式时，它才会产生视觉上的变化。如果不对 <span> 应用样式，那么 <span> 元素中的文本与其他文本不会任何视觉上的差异。<span> 标签提供了一种将文本的一部分或者文档的一部分独立出来的方式。#}
-{}
-        <div class="float-right">
+        <span class="float-right">
             <a class="btn" href="{{ url_for('edit', movie_id=movie.id) }}">Edit</a>
             <form class="inline-form" method="post" action="{{ url_for('delete', movie_id=movie.id) }}">
                 <input class="btn" type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure?')">
             </form>
             <a class="imdb" href="https://www.imdb.com/find?q={{ movie.title }}" target="_blank" title="Find this movie on IMDb">IMDb</a>
-        </div>
+        </span>
     </li>
     {% endfor %}
 </ul>
-
-<img alt="Walking Totoro" class="totoro" src=http://helloflask.com/totoro.gif title="to~to~ro~">
+<img alt="Walking Totoro" class="totoro" src="{{ url_for('static', filename='images/totoro.gif') }}" title="to~to~ro~">
 {% endblock %}
