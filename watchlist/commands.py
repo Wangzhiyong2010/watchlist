@@ -1,31 +1,44 @@
+# -*- coding: utf-8 -*-
+import click
+
 from watchlist import app, db
 from watchlist.models import User, Movie
-import click 
 
 
-'''
-自定义命令initdb
-'''
-
-
-@app.cli.command()  # 注册为命令
-@click.option('--drop', is_flag=True, help='Create after drop.')  # 设置选项
+@app.cli.command()
+@click.option('--drop', is_flag=True, help='Create after drop.')
 def initdb(drop):
     """Initialize the database."""
-    if drop:  # 判断是否输入了选项
+    if drop:
         db.drop_all()
     db.create_all()
-    click.echo('Initialized database.')  # 输出提示信息
+    click.echo('Initialized database.')
 
-'''
-自定义命令 forge
-'''
+movie_list = [
+        {'title':'流浪地球', 'year':'2019'},
+        {'title': '调音师', 'year':'2018'},
+        {'title': '疯狂的外星人', 'year':'2019'},
+        {'title': '盗梦空间 ', 'year':'2010'},
+        {'title': '阿凡达', 'year':'2009'},
+        {'title': '窃听风暴', 'year':'2006'},
+        {'title': '七宗罪', 'year':'1995'},
+        {'title': '禁闭岛', 'year':'2010'},
+        {'title': '死无对证', 'year':'2018'},
+        {'title': '谍影重重', 'year':'2002'},
+        {'title': '源代码', 'year':'2011'},
+        {'title': '最佳出价', 'year':'2013'},
+        {'title': '蝙蝠侠：黑暗骑士', 'year':'2008'},
+        {'title': '变脸', 'year':'1997'},
+        {'title': '肖申克的救赎', 'year':'1994'},
+        {'title': '阿甘正传', 'year':'1994'}]
+
+
 @app.cli.command()
 def forge():
-    """ Generate fake data."""
+    """Generate fake data."""
     db.create_all()
-    #全局的两个变量移动到这个函数里面
-    name = 'Wangzhiyong'
+
+    name = 'Grey Li'
     movies = [
         {'title': 'My Neighbor Totoro', 'year': '1988'},
         {'title': 'Dead Poets Society', 'year': '1989'},
@@ -39,19 +52,18 @@ def forge():
         {'title': 'The Pork of Music', 'year': '2012'},
     ]
 
-    user = User(name = name)
+    user = User(name=name)
     db.session.add(user)
+    for m2 in movie_list:
+        movie2 = Movie(title_zhongwen = m2['title'], year = m2['year'])
+        db.session.add(movie2)
     for m in movies:
-        movie = Movie(title = m['title'], year = m['year'])
+        movie = Movie(title=m['title'], year = m['year'])
         db.session.add(movie)
 
     db.session.commit()
     click.echo('Done.')
 
-"""
-自定义命令 admin 创建管理员账户
-
-"""
 
 @app.cli.command()
 @click.option('--username', prompt=True, help='The username used to login.')

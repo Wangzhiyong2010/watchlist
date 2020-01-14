@@ -113,6 +113,15 @@ input[name=year] {
     padding: 3px 5px;
 }
 
+.douban {
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    background: #008B00;
+    border-radius: 5px;
+    padding: 3px 5px;
+}
 .totoro {
     display: block;
     margin: 0 auto;

@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+
 from watchlist import db
 
 
@@ -16,7 +18,8 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
 
-class Movie(db.Model):  # 表名将会是 movie
-    id = db.Column(db.Integer, primary_key=True)  # 主键
-    title = db.Column(db.String(60))  # 电影标题
-    year = db.Column(db.String(4))  # 电影年份
+class Movie(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(60))
+    title_zhongwen = db.Column(db.String(20))
+    year = db.Column(db.String(4))
